@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'pages/feed.dart';
 import 'pages/home.dart';
 
@@ -17,7 +18,11 @@ class MyApp extends StatelessWidget {
       title: 'Proverbs Daily',
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.blue,
+        iconTheme: const IconThemeData(
+          color: Colors.black
+        ),
+        fontFamily: 'Inter',
+        backgroundColor: Colors.white30
       ),
       initialRoute: '/',
       routes: {

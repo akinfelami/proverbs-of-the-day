@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/feed.dart';
-import '../main.dart';
+
 
 void main () => runApp(const BottomAppBarWidget());
 
@@ -35,6 +34,7 @@ class BottomAppBarWidget extends StatelessWidget {
             children: <Widget>[
               Center(child: IconButton(
                   onPressed: (){
+                    ModalRoute.of(context)?.settings.name == '/feed' ? {} :
                     Navigator.pushNamed(
                         context,
                         '/feed'
