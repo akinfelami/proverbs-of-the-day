@@ -31,6 +31,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(240, 245, 245, 1),
       appBar: AppBar(
         shadowColor: Colors.orangeAccent,
         backgroundColor: Colors.deepOrange[500],
@@ -42,14 +43,14 @@ class _HomeState extends State<Home> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: const [
                 Icon(Icons.sunny, size: 30,),
-                SizedBox(width: 8,),
-                Text('Verse of the Day', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
+                SizedBox(width: 10,),
+                Text('Verse of the Day', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),
               ],
             ),
           ),
