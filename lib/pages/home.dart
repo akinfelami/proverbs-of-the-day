@@ -42,7 +42,7 @@ class _HomeState extends State<Home> {
   // Schedule.parse('0 00 * * *')
 
   scheduleTask(){
-    cron.schedule(Schedule.parse('*/10 * * * *'), () async {
+    cron.schedule(Schedule.parse('0 00 * * *'), () async {
       var data = await VerseProvider.getVerse();
       setState(() {
         bibleData = data;
