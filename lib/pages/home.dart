@@ -1,8 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import '../widgets/verse-card.dart';
-import '../widgets/bottom-app-bar.dart';
+import 'package:intl/intl.dart';
+
+
+
+void main() => runApp(const Home());
+
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -12,59 +18,67 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String? bibleChapter = 'Proverbs 27:14';
-  String? bibleDate = '08/07/2022';
-  String? bibleTranslation = 'World English Translation';
-  String? bibleContent = 'Who has ascended up into heaven, and descended? Who has gathered the wind in his fists? Who has bound the waters in his garment? Who has established all the ends of the earth? What is his name, and what is his son’s name, if you know? ';
+  var bibleData;
+  final cron = Cron();
+  var now = DateTime.now();
+  var formatter = DateFormat('yyyy-MM-dd');
 
-  fetchBibleData () async {
-    var bibleData = await VerseProvider.getVerse();
 
+  @override
+  void initState() {
+    scheduleTask();
+    super.initState();
+  }
+
+  fetchVerse() async {
+    var data = await VerseProvider.verseOfTheDay();
     setState((){
-      bibleChapter = bibleData['reference'];
-      bibleContent = bibleData['content'];
-      bibleTranslation= bibleData['translation'];
+      bibleData = data;
+    });
+
+    return bibleData;
+  }
+
+  // Schedule.parse('0 00 * * *')
+
+  scheduleTask(){
+    cron.schedule(Schedule.parse('*/10 * * * *'), () async {
+      var data = await VerseProvider.getVerse();
+      setState(() {
+        bibleData = data;
+      });
     });
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(240, 245, 245, 1),
-      appBar: AppBar(
-        shadowColor: Colors.orangeAccent,
-        backgroundColor: Colors.deepOrange[500],
-        leading: Image.asset('assets/bible.png'),
-        title: const Text('Proverbs Daily'),
-      ),
-      body:  Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Icon(Icons.sunny, size: 30,),
-                SizedBox(width: 10,),
-                Text('Verse of the Day', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),
-              ],
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.fromLTRB(20, 50, 20, 20),
+          child: FutureBuilder(
+            future: fetchVerse(),
+            builder: (context, snapshot){
+              if(snapshot.hasData){
+                return VerseCard(
+                    chapter: bibleData['reference'],
+                    date: formatter.format(now),
+                    translation: bibleData['translation'],
+                    content: bibleData['content']);
+    }else{
+                return Center(
+                child: CircularProgressIndicator(
+                color: Colors.deepOrange[500],
+                )
+                );
+              }
+    }
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: VerseCard(
-                chapter: bibleChapter,
-                date: '08/05/2022',
-                translation: bibleTranslation,
-                content: bibleContent),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const BottomAppBarWidget(),
+        ),
+      ],
     );
   }
 }
@@ -72,10 +86,21 @@ class _HomeState extends State<Home> {
 class VerseProvider{
 
   static Future<Map> getVerse() async {
-    var endpoint = "https://agile-savannah-64819.herokuapp.com/verses";
+    var endpoint = "https://pdbbackend.herokuapp.com/verses";
     var url = Uri.parse(endpoint);
     final response = await http.get(url);
     final data = jsonDecode(response.body);
     return data;
+
+
+  }
+
+  static Future<Map> verseOfTheDay() async{
+    var endpoint = "https://pdbbackend.herokuapp.com/verses/verse-of-the-day";
+    var url = Uri.parse(endpoint);
+    final response = await http.get(url);
+    final data = jsonDecode(response.body);
+    return data;
+
   }
 }

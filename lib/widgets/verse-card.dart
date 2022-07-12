@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 void main() => runApp(const VerseCard());
@@ -29,32 +30,51 @@ class _VerseCardState extends State<VerseCard> {
   Widget build(BuildContext context) {
     return Center(
       child: Card(
-        color: Colors.white30,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(0)),
+        ),
         margin: const EdgeInsets.all(0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              const SizedBox(height: 10,),
                ListTile(
-                title: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: Text(widget.chapter,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold ),),
+                title: Container(
+                  margin: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(widget.date,
+                        style: const TextStyle(
+                          fontStyle:
+                          FontStyle.italic, ),),
+                    ],
+                  ),
                 ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(widget.content,
-                    style:  const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
+                subtitle: Container(
+                  margin: const EdgeInsets.all(10.0),
+                  child: Text(widget.content, textAlign: TextAlign.justify,
+                    style: GoogleFonts.libreBaskerville(fontSize: 16,
+                      fontWeight: FontWeight.w500, color: Colors.black, ),),
                 ),
               ),
-              const SizedBox(height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children:  <Widget>[
-                  Text(widget.date,
-                    style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),),
-                  Text(widget.translation,
-                    style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),),
-                ],
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children:  <Widget>[
+                    Text('- '+ widget.chapter,
+                      style:  const TextStyle(
+                        fontSize: 16,
+                        fontWeight:
+                        FontWeight.w600,
+                        fontStyle:
+                        FontStyle.italic, ),),
+                    Text(widget.translation,
+                      style: const TextStyle(fontWeight: FontWeight.w500),),
+                  ],
+                ),
               ),
               const SizedBox(height: 10,)
             ],
