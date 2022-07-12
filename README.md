@@ -16,6 +16,7 @@ A mobile app that delivers a verse from the book of Proverbs in the bible daily.
 - the app is currently served by a backend I wrote. The backend is hosted on Heroku. 
 - Please use responsibly. I reserve the right to shut down the server at any point
 - The backend is open-sourced so you can clone the repo and host it yourself- [Proverbs Daily Backend](https://github.com/akinfelami/proverbs-daily-backend).
+- Feel free to create an issue to ask a question or contribute!
 
 As a suggestion, cron currently schedules a new verse at midnight. Feel free to edit this to test your code. Read more here https://pub.dev/packages/cron  
 
